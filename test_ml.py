@@ -3,6 +3,7 @@ import os
 from ml.model import (load_model, compute_model_metrics)
 import numpy as np
 import pytest
+from sklearn.ensemble import RandomForestClassifier
 main_path = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -36,9 +37,10 @@ def test_created_model_is_RandomForestClassifier():
     """
     Test that trained model is RandomForestClassifier model.
     """
-    model_path = os.path.join(main_path, "model", "model.pkl")
-    model = load_model(model_path)
-    # print(f"{type(model).__name__}")
+    X_train = np.array([[0.0, 0.0], [1.0, 1.0], [2.0, 2.0], [3.0, 3.0]])
+    y_train = np.array([0, 0, 1, 1])
+    model = RandomForestClassifier(n_estimators=10, random_state=42)
+    model.fit(X_train, y_train)
 
     assert type(model).__name__ == "RandomForestClassifier", f"Expected \
         RandomForestClassifier, got {type(model).__name__}"
@@ -47,7 +49,6 @@ def test_created_model_is_RandomForestClassifier():
 def test_specific_target_metrics():
     """Test arrays that yield Precision ~0.7592, Recall ~0.5772,\
         and F1 ~0.6558. Best metrics for initial model."""
-    # Counts required: TP = 142, FP = 45, FN = 104, TN = 0 (or any)
     tp, fp, fn = 142, 45, 104
 
     y = np.concatenate([

@@ -10,22 +10,32 @@ jobs:
         python-version: ["3.12"] 
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+    # 1. Check out your project files
+    - uses: actions/checkout@v4
+
+    # 2. Install uv and enable automatic caching
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v5
       with:
-        python-version: ${{ matrix.python-version }}
+        enable-cache: true
+
+    # 3. Install the specific Python version via uv
+    - name: Set up Python ${{ matrix.python-version }}
+      run: uv python install ${{ matrix.python-version }}
+
+    # 4. Synchronize the environment exactly matching your uv.lock
     - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      run: uv sync --locked
+
+    # 5. Lint with flake8 via uv run
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        uv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        uv run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    # 6. Test with pytest via uv run
     - name: Test with pytest
       run: |
-        pytest test_ml.py -v
+        uv run pytest test_ml.py -v

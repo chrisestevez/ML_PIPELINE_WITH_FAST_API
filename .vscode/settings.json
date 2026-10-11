@@ -1,0 +1,5 @@
+{
+    // Tells the extension to prioritize the Flake8 installed in your virtual environment
+    "flake8.importStrategy": "fromEnvironment",
+
+}

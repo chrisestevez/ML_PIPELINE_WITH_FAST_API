@@ -1,0 +1,15 @@
+[project]
+name = "fastml"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.112.0",
+    "flake8>=7.4.1",
+    "gunicorn==22.0.0",
+    "pandas==2.2.2",
+    "pytest==8.3.2",
+    "pytest-subtests>=0.15.0",
+    "requests==2.32.3",
+    "scikit-learn==1.5.1",
+    "uvicorn==0.30.5",
+]

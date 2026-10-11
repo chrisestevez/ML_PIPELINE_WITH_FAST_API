@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from ml.model import (load_model, compute_model_metrics)
+from ml.model import (compute_model_metrics)
 import numpy as np
 import pytest
 from sklearn.ensemble import RandomForestClassifier
